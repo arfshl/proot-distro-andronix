@@ -9,6 +9,27 @@ apt install curl wget nano proot tar xz-utils -y
 
 # download and extract rootfs under /data/data/com.termux/files/home/pd-andronix/<distroname>
 echo "download and extract rootfs under /data/data/com.termux/files/home/pd-andronix/<distroname>"
+
+ARCH=$(uname -m)
+case "$ARCH" in
+    armhf|arm|armv7l) 
+        ARCH_DEBIAN="armhf" 
+        ;;
+    aarch64|arm64) 
+        ARCH_DEBIAN="arm64" 
+        ;;
+    x86_64|amd64)
+        ARCH_DEBIAN="amd64"
+        ;;
+    i386|i686)
+        ARCH_DEBIAN="i386"
+        ;;
+    *)
+        echo "Unsupported architecture: $ARCH"
+        exit 1
+        ;;
+esac
+
 mkdir -p /data/data/com.termux/files/home/pd-andronix/debian
 cd /data/data/com.termux/files/home/pd-andronix/debian
 curl -L https://github.com/arfshl/pd-custom-rootfs/releases/download/debian-stable/debian-stable-$(dpkg --print-architecture).tar.xz -o debian.tar.xz
