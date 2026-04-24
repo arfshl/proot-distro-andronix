@@ -18,7 +18,7 @@ mkdir -p /data/data/com.termux/files/home/pd-andronix/debian/binds
 mkdir -p /data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings
 
 if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/stat" ]; then
-	cat <<- EOF > "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/stat"
+	cat <<- "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/stat"
 	cpu  5502487 1417100 4379831 62829678 354709 539972 363929 0 0 0
 	cpu0 611411 171363 667442 7404799 61301 253898 205544 0 0 0
 	cpu1 660993 192673 571402 7853047 39647 49434 29179 0 0 0
@@ -39,13 +39,13 @@ if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/faket
 fi
 
 if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/version" ]; then
-	cat <<- EOF > "/data/data/com.termux/files/home/pd-andronix/debian/debian/fakethings/version"
+	cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/version"
 	Linux version 6.18 (pd-andronix) (gcc version 14.2 (fake /proc/fakethings/version) ) (10040828) #1 SMP PREEMPT Fri Apr 10 00:00:00 WIB 2026
 	EOF
 fi
 
-if [ ! -f "$/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/vmstat" ]; then
-	cat <<- EOF > "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/vmstat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/vmstat" ]; then
+	cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/vmstat"
 	nr_free_pages 15717
 	nr_zone_inactive_anon 87325
 	nr_zone_active_anon 259521
@@ -152,7 +152,7 @@ if [ ! -f "$/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fake
 	EOF
 fi
 
-cat >> /data/data/com.termux/files/usr/bin/debian-cli <<- EOF
+cat << "EOF" > /data/data/com.termux/files/usr/bin/debian-cli
 #!/bin/bash
 root="/data/data/com.termux/files/home/pd-andronix/debian"
 ## unset LD_PRELOAD in case termux-exec is installed
@@ -162,9 +162,9 @@ command+=" --kill-on-exit"
 command+=" --link2symlink"
 command+=" -0"
 command+=" -r ${root}/debian"
-if [ -n "\$(ls -A )" ${root}/binds]; then
+if [ -n "$(ls -A ${root}/binds)" ]; then
     for f in ${root}/binds/* ;do
-      . \$f
+      . $f
     done
 fi
 command+=" -b /dev"
@@ -189,18 +189,18 @@ command+=" /usr/bin/env -i"
 command+=" MOZ_FAKE_NO_SANDBOX=1"
 command+=" HOME=/root"
 command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
-command+=" TERM=\$TERM"
+command+=" TERM=$TERM"
 command+=" LANG=C.UTF-8"
 command+=" /bin/bash --login"
-com="\$@"
-if [ -z "\$1" ]; then
-    exec \$command
+com="$@"
+if [ -z "$1" ]; then
+    exec $command
 else
-    \$command -c "\$com"
+    $command -c "$@"
 fi
 EOF
 
-chmod +x ${root}/debian/root/.bash_profile
+chmod +x /data/data/com.termux/files/home/pd-andronix/debian/debian/root/.bash_profile
 echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/debian/debian/etc/hosts
 echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/debian/debian/etc/resolv.conf
 chmod +x /data/data/com.termux/files/home/pd-andronix/debian/debian/etc/resolv.conf
