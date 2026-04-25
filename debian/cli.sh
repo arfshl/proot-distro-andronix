@@ -21,9 +21,6 @@ case "$ARCH" in
     x86_64|amd64)
         ARCH="amd64"
         ;;
-    i386|i686)
-        ARCH="i386"
-        ;;
     *)
         echo "Unsupported architecture: $ARCH"
         exit 1
@@ -173,6 +170,7 @@ speculative_pgfault 221449963
 EOF
 fi
 
+if [ ! -f "/data/data/com.termux/files/usr/bin/debian-cli" ]; then
 cat << "EOF" > /data/data/com.termux/files/usr/bin/debian-cli
 #!/bin/bash
 root="/data/data/com.termux/files/home/pd-andronix/debian"
@@ -220,6 +218,7 @@ else
     $command -c "$@"
 fi
 EOF
+fi
 
 chmod +x /data/data/com.termux/files/home/pd-andronix/debian/debian/root/.bash_profile
 echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/debian/debian/etc/hosts
