@@ -188,7 +188,7 @@ if [ -n "$(ls -A ${root}/binds)" ]; then
       . $f
     done
 fi
-command+=" -k 6.18"
+command+=" -k 6.18-10040828"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
