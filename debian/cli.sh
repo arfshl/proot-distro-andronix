@@ -29,9 +29,11 @@ esac
 
 mkdir -p /data/data/com.termux/files/home/pd-andronix/debian
 cd /data/data/com.termux/files/home/pd-andronix/debian
-curl -L https://github.com/arfshl/pd-custom-rootfs/releases/download/debian-stable/debian-stable-$ARCH.tar.xz -o debian.tar.xz
-proot --link2symlink tar -xJf debian.tar.xz
+URL=$(curl -Ls https://github.com/termux/proot-distro/raw/master/distro-plugins/debian.sh | grep "TARBALL_URL\['$ARCH'\]" | cut -d '"' -f2)
+curl -L $URL --output debian.tar.xz
+proot --link2symlink tar -xJpf debian.tar.xz
 rm debian.tar.xz
+mv debian-*-* debian
 mkdir -p /data/data/com.termux/files/home/pd-andronix/debian/binds
 mkdir -p /data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings
 
@@ -186,10 +188,10 @@ if [ -n "$(ls -A ${root}/binds)" ]; then
       . $f
     done
 fi
+command+=" -k 6.18"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
-command+=" -b /data"
 command+=" -b ${root}/debian:/dev/shm"
 command+=" -b /proc/self/fd/2:/dev/stderr"
 command+=" -b /proc/self/fd/1:/dev/stdout"
