@@ -27,18 +27,17 @@ case "$ARCH" in
         ;;
 esac
 
-mkdir -p /data/data/com.termux/files/home/pd-andronix/debian
-cd /data/data/com.termux/files/home/pd-andronix/debian
-URL=$(curl -Ls https://github.com/termux/proot-distro/raw/master/distro-plugins/debian.sh | grep "TARBALL_URL\['$ARCH'\]" | cut -d '"' -f2)
-curl -L $URL --output debian.tar.xz
-proot --link2symlink tar -xJpf debian.tar.xz
-rm debian.tar.xz
-mv debian-*-* debian
-mkdir -p /data/data/com.termux/files/home/pd-andronix/debian/binds
-mkdir -p /data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings
+mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lts
+cd /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lts
+curl -L https://github.com/arfshl/pd-custom-rootfs/releases/download/ubuntu-lts/ubuntu-lts-$ARCH.tar.xz --output ubuntu.tar.xz
+proot --link2symlink tar -xJpf ubuntu.tar.xz
+rm ubuntu.tar.xz
+mv ubuntu-*-* ubuntu
+mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/binds
+mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/stat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/stat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/stat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/stat"
 cpu  5502487 1417100 4379831 62829678 354709 539972 363929 0 0 0
 cpu0 611411 171363 667442 7404799 61301 253898 205544 0 0 0
 cpu1 660993 192673 571402 7853047 39647 49434 29179 0 0 0
@@ -58,13 +57,13 @@ softirq 175407567 14659158 51739474 28359 5901272 8879590 0 11988166 46104015 0 
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/version" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/version"                                      Linux version 6.18-10040828 (arfshl@pd-andronix) (gcc version 14.2 (faked 04262026) #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/version" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/version"                                      Linux version 6.18-10040828 (arfshl@pd-andronix) (gcc version 14.2 (faked 04262026) #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/vmstat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian/debian/proc/fakethings/vmstat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/vmstat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/vmstat"
 nr_free_pages 15717
 nr_zone_inactive_anon 87325
 nr_zone_active_anon 259521
@@ -171,17 +170,17 @@ speculative_pgfault 221449963
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/usr/bin/debian-cli" ]; then
-cat << "EOF" > /data/data/com.termux/files/usr/bin/debian-cli
+if [ ! -f "/data/data/com.termux/files/usr/bin/ubuntu-cli" ]; then
+cat << "EOF" > /data/data/com.termux/files/usr/bin/ubuntu-cli
 #!/bin/bash
-root="/data/data/com.termux/files/home/pd-andronix/debian"
+root="/data/data/com.termux/files/home/pd-andronix/ubuntu-lts"
 ## unset LD_PRELOAD in case termux-exec is installed
 unset LD_PRELOAD
 command="proot"
 command+=" --kill-on-exit"
 command+=" --link2symlink"
 command+=" -0"
-command+=" -r ${root}/debian"
+command+=" -r ${root}/ubuntu"
 if [ -n "$(ls -A ${root}/binds)" ]; then
     for f in ${root}/binds/* ;do
       . $f
@@ -191,15 +190,15 @@ command+=" -k 6.18-10040828"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
-command+=" -b ${root}/debian:/dev/shm"
+command+=" -b ${root}/ubuntu:/dev/shm"
 command+=" -b /proc/self/fd/2:/dev/stderr"
 command+=" -b /proc/self/fd/1:/dev/stdout"
 command+=" -b /proc/self/fd/0:/dev/stdin"
 command+=" -b /dev/urandom:/dev/random"
 command+=" -b /proc/self/fd:/dev/fd"
-command+=" -b ${root}/debian/proc/fakethings/stat:/proc/stat"
-command+=" -b ${root}/debian/proc/fakethings/vmstat:/proc/vmstat"
-command+=" -b ${root}/debian/proc/fakethings/version:/proc/version"
+command+=" -b ${root}/ubuntu/proc/fakethings/stat:/proc/stat"
+command+=" -b ${root}/ubuntu/proc/fakethings/vmstat:/proc/vmstat"
+command+=" -b ${root}/ubuntu/proc/fakethings/version:/proc/version"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 ## uncomment the following line to mount /sdcard directly to / 
@@ -221,11 +220,11 @@ fi
 EOF
 fi
 
-# chmod +x /data/data/com.termux/files/home/pd-andronix/debian/debian/root/.bash_profile
-echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/debian/debian/etc/hosts
-echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/debian/debian/etc/resolv.conf
-chmod +x /data/data/com.termux/files/home/pd-andronix/debian/debian/etc/resolv.conf
-termux-fix-shebang /data/data/com.termux/files/usr/bin/debian-cli
-chmod +x /data/data/com.termux/files/usr/bin/debian-cli
+# chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/root/.bash_profile
+echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/etc/hosts
+echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/etc/resolv.conf
+chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/etc/resolv.conf
+termux-fix-shebang /data/data/com.termux/files/usr/bin/ubuntu-cli
+chmod +x /data/data/com.termux/files/usr/bin/ubuntu-cli
 echo "Installation Complete!"
-echo "You can now launch debian-cli with the command debian-cli from next time"
+echo "You can now launch ubuntu-cli with the command ubuntu-cli from next time"
