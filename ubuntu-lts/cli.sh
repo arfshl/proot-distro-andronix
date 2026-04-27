@@ -58,7 +58,8 @@ EOF
 fi
 
 if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/version" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/version"                                      Linux version 6.18-10040828 (arfshl@pd-andronix) (gcc version 14.2 (faked 04262026) #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/version"                                      
+Linux version 6.18-10040828 (arfshl@pd-andronix) (gcc version 14.2 (faked 04262026) #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
 EOF
 fi
 
