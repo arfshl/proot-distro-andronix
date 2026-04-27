@@ -45,7 +45,7 @@ mkdir -p /data/data/com.termux/files/home/pd-andronix/arch/arch/proc/fakethings
 
 if [ ! -f "/data/data/com.termux/files/home/pd-andronix/arch/arch/proc/fakethings/version" ]; then
 cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/arch/arch/proc/fakethings/version"
-Linux version 6.19.13-10042000828 (arfshl@pd-andronix) (gcc (GCC) 15.2.1 12092021 (05232022) GNU ld version 2.45.10-31012026 #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
+Linux version 6.19.13-1004200828 (arfshl@pd-andronix) (gcc (GCC) 15.2.1 12092021 (05232022) GNU ld version 2.45.10-31012026 #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
 EOF
 fi
 
@@ -286,7 +286,7 @@ if [ -n "$(ls -A ${root}/binds)" ]; then
       . $f
     done
 fi
-command+=" -k 6.18-10040828"
+command+=" -k 6.18-1004082008"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
