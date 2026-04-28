@@ -323,3 +323,4 @@ termux-fix-shebang /data/data/com.termux/files/usr/bin/fedora-cli
 chmod +x /data/data/com.termux/files/usr/bin/fedora-cli
 echo "Installation Complete!"
 echo "You can now launch fedora-cli with the command fedora-cli from next time"
+rm cli.sh

@@ -325,3 +325,4 @@ termux-fix-shebang /data/data/com.termux/files/usr/bin/debian-cli
 chmod +x /data/data/com.termux/files/usr/bin/debian-cli
 echo "Installation Complete!"
 echo "You can now launch debian-cli with the command debian-cli from next time"
+rm cli.sh
