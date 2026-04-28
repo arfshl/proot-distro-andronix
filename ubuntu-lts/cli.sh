@@ -34,19 +34,19 @@ proot --link2symlink tar -xJpf ubuntu-lts.tar.xz
 rm ubuntu-lts.tar.xz
 mv ubuntu-lts-*-* ubuntu-lts
 mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/binds
-mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings
+mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/proc/fakethings
 
 # A function for preparing fake content for certain system data interfaces which known to be restricted on Android OS.
 # All /proc entries are based on values retrieved from Fedora 43 KDE running on an expertbook-b1402cba, intel i3-1215u, and 8 GB of memory. Date 27/4/2026, Linux version 6.19.13-200.fc43.x86_64 
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/version" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/version"                                      
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/proc/fakethings/version" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/proc/fakethings/version"                                      
 Linux version 6.19.13-1004200828 (arfshl@pd-andronix) (gcc (GCC) 15.2.1 12092021 (05232022) GNU ld version 2.45.10-31012026 #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/stat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/stat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/proc/fakethings/stat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/proc/fakethings/stat"
 cpu  97011 93 28431 2110461 1305 8475 3662 0 0 0
 cpu0 14596 1 2768 260831 238 944 1286 0 0 0
 cpu1 10120 13 2172 267769 169 692 524 0 0 0
@@ -66,8 +66,8 @@ softirq 3074005 2127 586528 59 28761 72 0 14413 1445298 0 996747
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/vmstat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/proc/fakethings/vmstat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/proc/fakethings/vmstat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/proc/fakethings/vmstat"
 nr_free_pages 106785
 nr_free_pages_blocks 54272
 nr_zone_inactive_anon 0
@@ -276,7 +276,7 @@ command="proot"
 command+=" --kill-on-exit"
 command+=" --link2symlink"
 command+=" -0"
-command+=" -r ${root}/ubuntu"
+command+=" -r ${root}/ubuntu-lts"
 if [ -n "$(ls -A ${root}/binds)" ]; then
     for f in ${root}/binds/* ;do
       . $f
@@ -286,15 +286,15 @@ command+=" -k 6.19.13-1004200828"
 command+=" -b /dev"
 command+=" -b /proc"
 command+=" -b /sys"
-command+=" -b ${root}/ubuntu:/dev/shm"
+command+=" -b ${root}/ubuntu-lts:/dev/shm"
 command+=" -b /proc/self/fd/2:/dev/stderr"
 command+=" -b /proc/self/fd/1:/dev/stdout"
 command+=" -b /proc/self/fd/0:/dev/stdin"
 command+=" -b /dev/urandom:/dev/random"
 command+=" -b /proc/self/fd:/dev/fd"
-command+=" -b ${root}/ubuntu/proc/fakethings/stat:/proc/stat"
-command+=" -b ${root}/ubuntu/proc/fakethings/vmstat:/proc/vmstat"
-command+=" -b ${root}/ubuntu/proc/fakethings/version:/proc/version"
+command+=" -b ${root}/ubuntu-lts/proc/fakethings/stat:/proc/stat"
+command+=" -b ${root}/ubuntu-lts/proc/fakethings/vmstat:/proc/vmstat"
+command+=" -b ${root}/ubuntu-lts/proc/fakethings/version:/proc/version"
 ## uncomment the following line to have access to the home directory of termux
 #command+=" -b /data/data/com.termux/files/home:/root"
 ## uncomment the following line to mount /sdcard directly to / 
@@ -316,10 +316,10 @@ fi
 EOF
 fi
 
-# chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/root/.bash_profile
-echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/etc/hosts
-echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/etc/resolv.conf
-chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu/etc/resolv.conf
+# chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/root/.bash_profile
+echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/etc/hosts
+echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/etc/resolv.conf
+chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts/ubuntu-lts/etc/resolv.conf
 termux-fix-shebang /data/data/com.termux/files/usr/bin/ubuntu-lts-cli
 chmod +x /data/data/com.termux/files/usr/bin/ubuntu-lts-cli
 echo "Installation Complete!"
