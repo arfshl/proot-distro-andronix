@@ -269,48 +269,57 @@ if [ ! -f "/data/data/com.termux/files/usr/bin/ubuntu-lts-cli" ]; then
 cat << "EOF" > /data/data/com.termux/files/usr/bin/ubuntu-lts-cli
 #!/bin/bash
 root="/data/data/com.termux/files/home/pd-andronix/ubuntu-lts"
-## unset LD_PRELOAD in case termux-exec is installed
+kernelrelease="6.19.13-1004200828"
+kernelversion="#1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026"
+
 unset LD_PRELOAD
-command="proot"
-command+=" --kill-on-exit"
-command+=" --link2symlink"
-command+=" -0"
-command+=" -r ${root}/ubuntu-lts"
-if [ -n "$(ls -A ${root}/binds)" ]; then
-    for f in ${root}/binds/* ;do
-      . $f
-    done
+
+command=(
+  proot
+  --kill-on-exit
+  --link2symlink
+  -0
+  -r "${root}/ubuntu-lts"
+)
+
+if [ -n "$(ls -A "${root}/binds" 2>/dev/null)" ]; then
+  for f in "${root}/binds"/*; do
+    . "$f"
+  done
 fi
-command+=" -k 6.19.13-1004200828"
-command+=" -b /dev"
-command+=" -b /proc"
-command+=" -b /sys"
-command+=" -b ${root}/ubuntu-lts:/dev/shm"
-command+=" -b /proc/self/fd/2:/dev/stderr"
-command+=" -b /proc/self/fd/1:/dev/stdout"
-command+=" -b /proc/self/fd/0:/dev/stdin"
-command+=" -b /dev/urandom:/dev/random"
-command+=" -b /proc/self/fd:/dev/fd"
-command+=" -b ${root}/ubuntu-lts/proc/fakethings/stat:/proc/stat"
-command+=" -b ${root}/ubuntu-lts/proc/fakethings/vmstat:/proc/vmstat"
-command+=" -b ${root}/ubuntu-lts/proc/fakethings/version:/proc/version"
-## uncomment the following line to have access to the home directory of termux
-#command+=" -b /data/data/com.termux/files/home:/root"
-## uncomment the following line to mount /sdcard directly to / 
-#command+=" -b /sdcard"
-command+=" -w /root"
-command+=" /usr/bin/env -i"
-command+=" MOZ_FAKE_NO_SANDBOX=1"
-command+=" HOME=/root"
-command+=" PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games"
-command+=" TERM=$TERM"
-command+=" LANG=C.UTF-8"
-command+=" /bin/bash --login"
-com="$@"
+
+command+=(
+  -k "\\Linux\\$(hostname)\\$kernelrelease\\$kernelversion\\$(uname -m)\\localdomain\\-1\\"
+  -b /dev
+  -b /proc
+  -b /sys
+  -b "${root}/ubuntu-lts:/dev/shm"
+  -b /proc/self/fd/2:/dev/stderr
+  -b /proc/self/fd/1:/dev/stdout
+  -b /proc/self/fd/0:/dev/stdin
+  -b /dev/urandom:/dev/random
+  -b /proc/self/fd:/dev/fd
+  -b "${root}/ubuntu-lts/proc/fakethings/stat:/proc/stat"
+  -b "${root}/ubuntu-lts/proc/fakethings/vmstat:/proc/vmstat"
+  -b "${root}/ubuntu-lts/proc/fakethings/version:/proc/version"
+  # uncomment the following line to have access to the home directory of termux
+  #-b /data/data/com.termux/files/home:/root/termux-home
+  # uncomment the following line to the home sdcard
+  #-b /sdcard:/root/sdcard
+  -w /root
+  /usr/bin/env -i
+  MOZ_FAKE_NO_SANDBOX=1
+  HOME=/root
+  PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games
+  TERM="$TERM"
+  LANG=C.UTF-8
+  /bin/bash --login
+)
+
 if [ -z "$1" ]; then
-    exec $command
+  exec "${command[@]}"
 else
-    $command -c "$@"
+  exec "${command[@]}" -c "$@"
 fi
 EOF
 fi
