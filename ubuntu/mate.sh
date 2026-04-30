@@ -344,7 +344,6 @@ ubuntu-mate 'wget https://raw.githubusercontent.com/arfshl/proot-distro-desktop/
 
 echo "Installation Complete!"
 echo 'To start command line session: ubuntu-mate'
-echo 'To start X11 session: ubuntu-mate-x11'
 echo 'To start VNC server: startvnc'
 echo 'To stop VNC server: stopvnc'
 echo 'To restart VNC server: restartvnc'

@@ -25,27 +25,27 @@ case "$ARCH" in
         ;;
 esac
 
-mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora
-cd /data/data/com.termux/files/home/pd-andronix/fedora
+mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora-cli
+cd /data/data/com.termux/files/home/pd-andronix/fedora-cli
 URL=$(curl -Ls https://github.com/termux/proot-distro/raw/refs/heads/master/distro-plugins/fedora.sh | grep "TARBALL_URL\['$ARCH'\]" | cut -d '"' -f2)
 curl -L $URL --output fedora.tar.xz
 proot --link2symlink tar -xJpf fedora.tar.xz
 rm fedora.tar.xz
 mv fedora-* fedora
-mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora/binds
-mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora/fedora/proc/fakethings
+mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora-cli/binds
+mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/proc/fakethings
 
 # A function for preparing fake content for certain system data interfaces which known to be restricted on Android OS.
 # All /proc entries are based on values retrieved from Fedora 43 KDE running on an expertbook-b1402cba, intel i3-1215u, and 8 GB of memory. Date 27/4/2026, Linux version 6.19.13-200.fc43.x86_64 
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora/fedora/proc/fakethings/version" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora/fedora/proc/fakethings/version"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/proc/fakethings/version" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/proc/fakethings/version"
 Linux version 6.19.13-1004200828 (arfshl@pd-andronix) (gcc (GCC) 15.2.1 12092021 (05232022) GNU ld version 2.45.10-31012026 #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora/fedora/proc/fakethings/stat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora/fedora/proc/fakethings/stat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/proc/fakethings/stat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/proc/fakethings/stat"
 cpu  97011 93 28431 2110461 1305 8475 3662 0 0 0
 cpu0 14596 1 2768 260831 238 944 1286 0 0 0
 cpu1 10120 13 2172 267769 169 692 524 0 0 0
@@ -65,8 +65,8 @@ softirq 3074005 2127 586528 59 28761 72 0 14413 1445298 0 996747
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora/fedora/proc/fakethings/vmstat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora/fedora/proc/fakethings/vmstat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/proc/fakethings/vmstat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/proc/fakethings/vmstat"
 nr_free_pages 106785
 nr_free_pages_blocks 54272
 nr_zone_inactive_anon 0
@@ -268,7 +268,7 @@ fi
 if [ ! -f "/data/data/com.termux/files/usr/bin/fedora-cli" ]; then
 cat << "EOF" > /data/data/com.termux/files/usr/bin/fedora-cli
 #!/bin/bash
-root="/data/data/com.termux/files/home/pd-andronix/fedora"
+root="/data/data/com.termux/files/home/pd-andronix/fedora-cli"
 kernelrelease="6.19.13-1004200828"
 kernelversion="#1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026"
 
@@ -324,10 +324,10 @@ fi
 EOF
 fi
 
-# chmod +x /data/data/com.termux/files/home/pd-andronix/fedora/fedora/root/.bash_profile
-echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/fedora/fedora/etc/hosts
-echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/fedora/fedora/etc/resolv.conf
-chmod +x /data/data/com.termux/files/home/pd-andronix/fedora/fedora/etc/resolv.conf
+# chmod +x /data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/root/.bash_profile
+echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/etc/hosts
+echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/etc/resolv.conf
+chmod +x /data/data/com.termux/files/home/pd-andronix/fedora-cli/fedora/etc/resolv.conf
 termux-fix-shebang /data/data/com.termux/files/usr/bin/fedora-cli
 chmod +x /data/data/com.termux/files/usr/bin/fedora-cli
 echo "Installation Complete!"
