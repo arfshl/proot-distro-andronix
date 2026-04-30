@@ -342,7 +342,6 @@ alpine-lxde 'apk -U upgrade && apk add wget'
 alpine-lxde 'wget https://raw.githubusercontent.com/arfshl/proot-distro-desktop/refs/heads/main/alpine/lxde/install.sh -O install.sh && chmod +x install.sh && ./install.sh && rm install.sh'
 
 echo 'To start command line session: alpine-lxde'
-echo 'To start X11 session: alpine-lxde-x11'
 echo 'To start VNC server: startvnc'
 echo 'To stop VNC server: stopvnc'
 echo 'To restart VNC server: restartvnc'

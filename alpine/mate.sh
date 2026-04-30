@@ -342,7 +342,6 @@ alpine-mate 'apk -U upgrade && apk add wget'
 alpine-mate 'wget https://raw.githubusercontent.com/arfshl/proot-distro-desktop/refs/heads/main/alpine/mate/install.sh -O install.sh && chmod +x install.sh && ./install.sh && rm install.sh'
 
 echo 'To start command line session: alpine-mate'
-echo 'To start X11 session: alpine-mate-x11'
 echo 'To start VNC server: startvnc'
 echo 'To stop VNC server: stopvnc'
 echo 'To restart VNC server: restartvnc'
