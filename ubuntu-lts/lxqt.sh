@@ -27,25 +27,25 @@ case "$ARCH" in
         ;;
 esac
 
-mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce
-cd /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce
+mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt
+cd /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt
 curl -L https://github.com/arfshl/pd-custom-rootfs/releases/download/ubuntu-lts/ubuntu-lts-$ARCH.tar.xz --output ubuntu-lts.tar.xz
 proot --link2symlink tar -xJpf ubuntu-lts.tar.xz
 rm ubuntu-lts.tar.xz
-mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/binds
-mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/proc/fakethings
+mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/binds
+mkdir -p /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/proc/fakethings
 
 # A function for preparing fake content for certain system data interfaces which known to be restricted on Android OS.
 # All /proc entries are based on values retrieved from Fedora 43 KDE running on an expertbook-b1402cba, intel i3-1215u, and 8 GB of memory. Date 27/4/2026, Linux version 6.19.13-200.fc43.x86_64 
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/proc/fakethings/version" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/proc/fakethings/version"                                      
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/proc/fakethings/version" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/proc/fakethings/version"                                      
 Linux version 6.19.13-1004200828 (arfshl@pd-andronix) (gcc (GCC) 15.2.1 12092021 (05232022) GNU ld version 2.45.10-31012026 #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/proc/fakethings/stat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/proc/fakethings/stat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/proc/fakethings/stat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/proc/fakethings/stat"
 cpu  97011 93 28431 2110461 1305 8475 3662 0 0 0
 cpu0 14596 1 2768 260831 238 944 1286 0 0 0
 cpu1 10120 13 2172 267769 169 692 524 0 0 0
@@ -65,8 +65,8 @@ softirq 3074005 2127 586528 59 28761 72 0 14413 1445298 0 996747
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/proc/fakethings/vmstat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/proc/fakethings/vmstat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/proc/fakethings/vmstat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/proc/fakethings/vmstat"
 nr_free_pages 106785
 nr_free_pages_blocks 54272
 nr_zone_inactive_anon 0
@@ -265,10 +265,10 @@ nr_unstable 0
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/usr/bin/ubuntu-lts-xfce" ]; then
-cat << "EOF" > /data/data/com.termux/files/usr/bin/ubuntu-lts-xfce
+if [ ! -f "/data/data/com.termux/files/usr/bin/ubuntu-lts-lxqt" ]; then
+cat << "EOF" > /data/data/com.termux/files/usr/bin/ubuntu-lts-lxqt
 #!/bin/bash
-root="/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce"
+root="/data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt"
 kernelrelease="6.19.13-1004200828"
 kernelversion="#1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026"
 
@@ -324,24 +324,24 @@ fi
 EOF
 fi
 
-# chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/root/.bash_profile
-echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/etc/hosts
-echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/etc/resolv.conf
-chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-xfce/ubuntu-lts/etc/resolv.conf
-termux-fix-shebang /data/data/com.termux/files/usr/bin/ubuntu-lts-xfce
-chmod +x /data/data/com.termux/files/usr/bin/ubuntu-lts-xfce
+# chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/root/.bash_profile
+echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/etc/hosts
+echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/etc/resolv.conf
+chmod +x /data/data/com.termux/files/home/pd-andronix/ubuntu-lts-lxqt/ubuntu-lts/etc/resolv.conf
+termux-fix-shebang /data/data/com.termux/files/usr/bin/ubuntu-lts-lxqt
+chmod +x /data/data/com.termux/files/usr/bin/ubuntu-lts-lxqt
 
 # setup desktop
-ubuntu-lts-xfce 'apt update && apt install wget -y'
+ubuntu-lts-lxqt 'apt update && apt install wget -y'
 
-ubuntu-lts-xfce 'wget https://raw.githubusercontent.com/arfshl/proot-distro-desktop/refs/heads/main/ubuntu/xfce/install.sh -O install.sh && chmod +x install.sh && ./install.sh && rm install.sh'
+ubuntu-lts-lxqt 'wget https://raw.githubusercontent.com/arfshl/proot-distro-desktop/refs/heads/main/ubuntu/lxqt/install.sh -O install.sh && chmod +x install.sh && ./install.sh && rm install.sh'
 
 echo "Installation Complete!"
-echo 'To start command line session: ubuntu-lts-xfce'
+echo 'To start command line session: ubuntu-lts-lxqt'
 echo 'To start VNC server: startvnc'
 echo 'To stop VNC server: stopvnc'
 echo 'To restart VNC server: restartvnc'
-echo 'Default user: ubuntu-xfce'
+echo 'Default user: ubuntu-lxqt'
 echo 'Default password: 123'    
 echo 'VNC server address: 127.0.0.1:5900'
 echo 'Default VNC password: 1234567890'
