@@ -27,27 +27,27 @@ case "$ARCH" in
         ;;
 esac
 
-mkdir -p /data/data/com.termux/files/home/pd-andronix/debian-cli
-cd /data/data/com.termux/files/home/pd-andronix/debian-cli
+mkdir -p /data/data/com.termux/files/home/pd-andronix/debian-lxqt
+cd /data/data/com.termux/files/home/pd-andronix/debian-lxqt
 URL=$(curl -Ls https://github.com/termux/proot-distro/raw/master/distro-plugins/debian.sh | grep "TARBALL_URL\['$ARCH'\]" | cut -d '"' -f2)
 curl -L $URL --output debian.tar.xz
 proot --link2symlink tar -xJpf debian.tar.xz
 rm debian.tar.xz
 mv debian-*-* debian
-mkdir -p /data/data/com.termux/files/home/pd-andronix/debian-cli/binds
-mkdir -p /data/data/com.termux/files/home/pd-andronix/debian-cli/debian/proc/fakethings
+mkdir -p /data/data/com.termux/files/home/pd-andronix/debian-lxqt/binds
+mkdir -p /data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/proc/fakethings
 
 # A function for preparing fake content for certain system data interfaces which known to be restricted on Android OS.
 # All /proc entries are based on values retrieved from Fedora 43 KDE running on an expertbook-b1402cba, intel i3-1215u, and 8 GB of memory. Date 27/4/2026, Linux version 6.19.13-200.fc43.x86_64 
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian-cli/debian/proc/fakethings/version" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian-cli/debian/proc/fakethings/version"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/proc/fakethings/version" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/proc/fakethings/version"
 Linux version 6.19.13-1004200828 (arfshl@pd-andronix) (gcc (GCC) 15.2.1 12092021 (05232022) GNU ld version 2.45.10-31012026 #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian-cli/debian/proc/fakethings/stat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian-cli/debian/proc/fakethings/stat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/proc/fakethings/stat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/proc/fakethings/stat"
 cpu  97011 93 28431 2110461 1305 8475 3662 0 0 0
 cpu0 14596 1 2768 260831 238 944 1286 0 0 0
 cpu1 10120 13 2172 267769 169 692 524 0 0 0
@@ -67,8 +67,8 @@ softirq 3074005 2127 586528 59 28761 72 0 14413 1445298 0 996747
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian-cli/debian/proc/fakethings/vmstat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian-cli/debian/proc/fakethings/vmstat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/proc/fakethings/vmstat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/proc/fakethings/vmstat"
 nr_free_pages 106785
 nr_free_pages_blocks 54272
 nr_zone_inactive_anon 0
@@ -267,10 +267,10 @@ nr_unstable 0
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/usr/bin/debian-cli" ]; then
-cat << "EOF" > /data/data/com.termux/files/usr/bin/debian-cli
+if [ ! -f "/data/data/com.termux/files/usr/bin/debian-lxqt" ]; then
+cat << "EOF" > /data/data/com.termux/files/usr/bin/debian-lxqt
 #!/bin/bash
-root="/data/data/com.termux/files/home/pd-andronix/debian-cli"
+root="/data/data/com.termux/files/home/pd-andronix/debian-lxqt"
 kernelrelease="6.19.13-1004200828"
 kernelversion="#1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026"
 
@@ -326,12 +326,12 @@ fi
 EOF
 fi
 
-# chmod +x /data/data/com.termux/files/home/pd-andronix/debian-cli/debian/root/.bash_profile
-echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/debian-cli/debian/etc/hosts
-echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/debian-cli/debian/etc/resolv.conf
-chmod +x /data/data/com.termux/files/home/pd-andronix/debian-cli/debian/etc/resolv.conf
-termux-fix-shebang /data/data/com.termux/files/usr/bin/debian-cli
-chmod +x /data/data/com.termux/files/usr/bin/debian-cli
+# chmod +x /data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/root/.bash_profile
+echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/etc/hosts
+echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/etc/resolv.conf
+chmod +x /data/data/com.termux/files/home/pd-andronix/debian-lxqt/debian/etc/resolv.conf
+termux-fix-shebang /data/data/com.termux/files/usr/bin/debian-lxqt
+chmod +x /data/data/com.termux/files/usr/bin/debian-lxqt
 
 # setup desktop
 debian-lxqt 'apt update && apt install wget -y'
@@ -347,4 +347,4 @@ echo 'Default password: 123'
 echo 'VNC server address: 127.0.0.1:5900'
 echo 'Default VNC password: 1234567890'
 echo "Installation Complete!"
-rm cli.sh
+rm lxqt.sh

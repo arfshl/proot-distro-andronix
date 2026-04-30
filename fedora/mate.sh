@@ -10,10 +10,14 @@ apt install curl wget nano proot tar xz-utils -y
 # download and extract rootfs under /data/data/com.termux/files/home/pd-andronix/<distroname>
 echo "download and extract rootfs under /data/data/com.termux/files/home/pd-andronix/<distroname>"
 
+# Install rootfs
 ARCH=$(uname -m)
 case "$ARCH" in
     aarch64|arm64) 
         ARCH="aarch64" 
+        ;;
+    x86_64|amd64)
+        ARCH="x86_64"
         ;;
     *)
         echo "Unsupported architecture: $ARCH"
@@ -21,27 +25,27 @@ case "$ARCH" in
         ;;
 esac
 
-mkdir -p /data/data/com.termux/files/home/pd-andronix/manjaro-xfce
-cd /data/data/com.termux/files/home/pd-andronix/manjaro-xfce
-URL=$(curl -Ls https://github.com/termux/proot-distro/raw/master/distro-plugins/manjaro.sh | grep "TARBALL_URL\['$ARCH'\]" | cut -d '"' -f2)
-curl -L $URL --output manjaro.tar.xz
-proot --link2symlink tar -xJpf manjaro.tar.xz
-rm manjaro.tar.xz
-mv manjaro-* manjaro
-mkdir -p /data/data/com.termux/files/home/pd-andronix/manjaro-xfce/binds
-mkdir -p /data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/proc/fakethings
+mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora-mate
+cd /data/data/com.termux/files/home/pd-andronix/fedora-mate
+URL=$(curl -Ls https://github.com/termux/proot-distro/raw/refs/heads/master/distro-plugins/fedora.sh | grep "TARBALL_URL\['$ARCH'\]" | cut -d '"' -f2)
+curl -L $URL --output fedora.tar.xz
+proot --link2symlink tar -xJpf fedora.tar.xz
+rm fedora.tar.xz
+mv fedora-* fedora
+mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora-mate/binds
+mkdir -p /data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/proc/fakethings
 
 # A function for preparing fake content for certain system data interfaces which known to be restricted on Android OS.
 # All /proc entries are based on values retrieved from Fedora 43 KDE running on an expertbook-b1402cba, intel i3-1215u, and 8 GB of memory. Date 27/4/2026, Linux version 6.19.13-200.fc43.x86_64 
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/proc/fakethings/version" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/proc/fakethings/version"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/proc/fakethings/version" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/proc/fakethings/version"
 Linux version 6.19.13-1004200828 (arfshl@pd-andronix) (gcc (GCC) 15.2.1 12092021 (05232022) GNU ld version 2.45.10-31012026 #1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/proc/fakethings/stat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/proc/fakethings/stat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/proc/fakethings/stat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/proc/fakethings/stat"
 cpu  97011 93 28431 2110461 1305 8475 3662 0 0 0
 cpu0 14596 1 2768 260831 238 944 1286 0 0 0
 cpu1 10120 13 2172 267769 169 692 524 0 0 0
@@ -61,8 +65,8 @@ softirq 3074005 2127 586528 59 28761 72 0 14413 1445298 0 996747
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/proc/fakethings/vmstat" ]; then
-cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/proc/fakethings/vmstat"
+if [ ! -f "/data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/proc/fakethings/vmstat" ]; then
+cat << "EOF" > "/data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/proc/fakethings/vmstat"
 nr_free_pages 106785
 nr_free_pages_blocks 54272
 nr_zone_inactive_anon 0
@@ -261,10 +265,10 @@ nr_unstable 0
 EOF
 fi
 
-if [ ! -f "/data/data/com.termux/files/usr/bin/manjaro-xfce" ]; then
-cat << "EOF" > /data/data/com.termux/files/usr/bin/manjaro-xfce
+if [ ! -f "/data/data/com.termux/files/usr/bin/fedora-mate" ]; then
+cat << "EOF" > /data/data/com.termux/files/usr/bin/fedora-mate
 #!/bin/bash
-root="/data/data/com.termux/files/home/pd-andronix/manjaro-xfce"
+root="/data/data/com.termux/files/home/pd-andronix/fedora-mate"
 kernelrelease="6.19.13-1004200828"
 kernelversion="#1 SMP PREEMPT_DYNAMIC Fri Apr 10 04:52:00 WIB 2026"
 
@@ -275,7 +279,7 @@ command=(
   --kill-on-exit
   --link2symlink
   -0
-  -r "${root}/manjaro"
+  -r "${root}/fedora"
 )
 
 if [ -n "$(ls -A "${root}/binds" 2>/dev/null)" ]; then
@@ -289,15 +293,15 @@ command+=(
   -b /dev
   -b /proc
   -b /sys
-  -b "${root}/manjaro:/dev/shm"
+  -b "${root}/fedora:/dev/shm"
   -b /proc/self/fd/2:/dev/stderr
   -b /proc/self/fd/1:/dev/stdout
   -b /proc/self/fd/0:/dev/stdin
   -b /dev/urandom:/dev/random
   -b /proc/self/fd:/dev/fd
-  -b "${root}/manjaro/proc/fakethings/stat:/proc/stat"
-  -b "${root}/manjaro/proc/fakethings/vmstat:/proc/vmstat"
-  -b "${root}/manjaro/proc/fakethings/version:/proc/version"
+  -b "${root}/fedora/proc/fakethings/stat:/proc/stat"
+  -b "${root}/fedora/proc/fakethings/vmstat:/proc/vmstat"
+  -b "${root}/fedora/proc/fakethings/version:/proc/version"
   # uncomment the following line to have access to the home directory of termux
   #-b /data/data/com.termux/files/home:/root/termux-home
   # uncomment the following line to the home sdcard
@@ -320,24 +324,26 @@ fi
 EOF
 fi
 
-# chmod +x /data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/root/.bash_profile
-echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/etc/hosts
-echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/etc/resolv.conf
-chmod +x /data/data/com.termux/files/home/pd-andronix/manjaro-xfce/manjaro/etc/resolv.conf
-termux-fix-shebang /data/data/com.termux/files/usr/bin/manjaro-xfce
-chmod +x /data/data/com.termux/files/usr/bin/manjaro-xfce
+# chmod +x /data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/root/.bash_profile
+echo "127.0.0.1 localhost localhost" > /data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/etc/hosts
+echo "nameserver 1.1.1.1" > /data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/etc/resolv.conf
+chmod +x /data/data/com.termux/files/home/pd-andronix/fedora-mate/fedora/etc/resolv.conf
+termux-fix-shebang /data/data/com.termux/files/usr/bin/fedora-mate
+chmod +x /data/data/com.termux/files/usr/bin/fedora-mate
 
-# setup desktop
-manjaro-xfce 'pacman -Sy --noconfirm wget'
-manjaro-xfce 'wget https://raw.githubusercontent.com/arfshl/proot-distro-desktop/refs/heads/main/arch/xfce/install.sh -O install.sh && chmod +x install.sh && ./install.sh && rm install.sh'
+# Setup fedora-mate
+fedora-mate 'dnf update && dnf install wget -y'
 
-echo 'To start command line session: manjaro-xfce'
+fedora-mate 'wget https://raw.githubusercontent.com/arfshl/proot-distro-desktop/refs/heads/main/fedora/mate/install.sh -O install.sh && chmod +x install.sh && ./install.sh && rm install.sh'
+
+echo 'To start command line session: fedora-mate'
+echo 'To start X11 session: fedora-mate-x11'
 echo 'To start VNC server: startvnc'
 echo 'To stop VNC server: stopvnc'
 echo 'To restart VNC server: restartvnc'
-echo 'Default user: arch-xfce'
+echo 'Default user: fedora-mate'
 echo 'Default password: 123'    
 echo 'VNC server address: 127.0.0.1:5900'
 echo 'Default VNC password: 1234567890'
 echo "Installation Complete!"
-rm xfce.sh
+rm mate.sh
