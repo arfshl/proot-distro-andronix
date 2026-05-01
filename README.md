@@ -33,7 +33,6 @@ Supported Desktop Environment:
 cd ~/pd-andronix && chmod -R 777 [distro aliases] && rm -rf [distro aliases]
 
 rm -f /data/data/com.termux/files/usr/bin/[distro aliases]
-rm -f /data/data/com.termux/files/usr/bin/[distro aliases]-x11
 
 
 - Full Uninstall, including in-termux dependency
@@ -41,7 +40,6 @@ rm -f /data/data/com.termux/files/usr/bin/[distro aliases]-x11
 cd ~/pd-andronix && chmod -R 777 [distro aliases] && rm -rf [distro aliases]
 
 rm -f /data/data/com.termux/files/usr/bin/[distro aliases]
-rm -f /data/data/com.termux/files/usr/bin/[distro aliases]-x11
 
 apt remove proot pulseaudio -y && apt autoremove -y
 
