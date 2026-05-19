@@ -21,6 +21,9 @@ case "$ARCH" in
     x86_64|amd64)
         ARCH="x86_64"
         ;;
+    i386|386)
+        ARCH="i386"
+        ;;
     *)
         echo "Unsupported architecture: $ARCH"
         exit 1
@@ -29,8 +32,7 @@ esac
 
 mkdir -p /data/data/com.termux/files/home/pd-andronix/debian-xfce
 cd /data/data/com.termux/files/home/pd-andronix/debian-xfce
-URL=$(curl -Ls https://github.com/termux/proot-distro/raw/master/distro-plugins/debian.sh | grep "TARBALL_URL\['$ARCH'\]" | cut -d '"' -f2)
-curl -L $URL --output debian.tar.xz
+curl -L https://github.com/arfshl/pd-andronix/releases/download/debian/debian-$ARCH.tar.xz --output debian.tar.xz
 proot --link2symlink tar -xJpf debian.tar.xz
 rm debian.tar.xz
 mv debian-*-* debian
