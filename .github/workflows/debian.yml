@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: [aarch64, x86_64, i386]
@@ -32,8 +32,8 @@ jobs:
               amd64) ARCH=amd64 ;;
               aarch64) ARCH=arm64 ;;
               arm64) ARCH=arm64 ;;
-              arm) ARCH=arm
-              i386) ARCH=386
+              arm) ARCH=arm ;;
+              i386) ARCH=386 ;;
               *)
               echo "Unsupported architecture: $ARCH"
               exit 1
@@ -49,7 +49,7 @@ jobs:
               docker export --output "$GITHUB_WORKSPACE/debian-${{ matrix.arch }}.tar.xz" $(docker create "debian:latest@${digest}")
 
   build-arm:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: [arm]
