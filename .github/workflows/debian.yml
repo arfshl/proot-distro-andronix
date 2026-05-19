@@ -48,6 +48,15 @@ jobs:
               docker pull "debian:latest@${digest}"
               docker export --output "$GITHUB_WORKSPACE/debian-${{ matrix.arch }}.tar.xz" $(docker create "debian:latest@${digest}")
 
+      - name: Push to release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: debian
+          name: Debian Stable
+          files: |
+            debian-*.tar.xz
+          preserve_order: true
+
   build-arm:
     runs-on: ubuntu-latest
     strategy:
@@ -66,8 +75,8 @@ jobs:
               amd64) ARCH=amd64 ;;
               aarch64) ARCH=arm64 ;;
               arm64) ARCH=arm64 ;;
-              arm) ARCH=arm
-              i386) ARCH=386
+              arm) ARCH=arm ;;
+              i386) ARCH=386 ;;
               *)
               echo "Unsupported architecture: $ARCH"
               exit 1
