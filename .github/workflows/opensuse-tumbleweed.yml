@@ -60,9 +60,9 @@ jobs:
               chroot "${TARGET_DIR}" rpm -qa --qf '%{NAME} ' | xargs -n 1 | grep -Pv '(filesystem|gpg-pubkey)' > /tmp/opensuse-pkgs.txt
               cat /tmp/opensuse-pkgs.txt | xargs chroot "${TARGET_DIR}" zypper install --no-confirm --force
               chroot "${TARGET_DIR}" zypper install --no-confirm util-linux
-              umount "${TARGET_DIR}/dev"
-              umount "${TARGET_DIR}/proc"
-              umount "${TARGET_DIR}/sys"
+              umount -l "${TARGET_DIR}/dev"
+              umount -l "${TARGET_DIR}/proc"
+              umount -l "${TARGET_DIR}/sys"
               EOF
               sudo rm -f /tmp/opensuse-pkgs.txt
               # Make rootfs archive
@@ -102,7 +102,7 @@ jobs:
               opensuse_manifest=$(docker manifest inspect opensuse/tumbleweed:latest)
               # Fetch image digest
               arch="$ARCH"
-              digest=$(echo "$opensuse_manifest" | jq -r ".manifests[] | select(.platform.architecture == \"$arch\") | select(.platform.variant == \"v7\") | .digest")
+              digest=$(echo "$opensuse_manifest" | jq -r ".manifests[] | select(.platform.architecture == \"$arch\") | .digest")
               
               # Pull and Export image
               mkdir --parent --mode 755 $GITHUB_WORKSPACE/opensuse-dump/opensuse-tumbleweed
@@ -126,9 +126,9 @@ jobs:
               chroot "${TARGET_DIR}" rpm -qa --qf '%{NAME} ' | xargs -n 1 | grep -Pv '(filesystem|gpg-pubkey)' > /tmp/opensuse-pkgs.txt
               cat /tmp/opensuse-pkgs.txt | xargs chroot "${TARGET_DIR}" zypper install --no-confirm --force
               chroot "${TARGET_DIR}" zypper install --no-confirm util-linux
-              umount "${TARGET_DIR}/dev"
-              umount "${TARGET_DIR}/proc"
-              umount "${TARGET_DIR}/sys"
+              umount -l "${TARGET_DIR}/dev"
+              umount -l "${TARGET_DIR}/proc"
+              umount -l "${TARGET_DIR}/sys"
               EOF
               sudo rm -f /tmp/opensuse-pkgs.txt
               # Make rootfs archive
@@ -194,9 +194,9 @@ jobs:
               chroot "${TARGET_DIR}" rpm -qa --qf '%{NAME} ' | xargs -n 1 | grep -Pv '(filesystem|gpg-pubkey)' > /tmp/opensuse-pkgs.txt
               cat /tmp/opensuse-pkgs.txt | xargs chroot "${TARGET_DIR}" zypper install --no-confirm --force
               chroot "${TARGET_DIR}" zypper install --no-confirm util-linux
-              umount "${TARGET_DIR}/dev"
-              umount "${TARGET_DIR}/proc"
-              umount "${TARGET_DIR}/sys"
+              umount -l "${TARGET_DIR}/dev"
+              umount -l "${TARGET_DIR}/proc"
+              umount -l "${TARGET_DIR}/sys"
               EOF
               sudo rm -f /tmp/opensuse-pkgs.txt
               # Make rootfs archive
