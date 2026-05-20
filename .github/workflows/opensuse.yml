@@ -62,9 +62,6 @@ jobs:
               chroot "./dump" rpm -qa --qf '%{NAME} ' | xargs -n 1 | grep -Pv '(filesystem|gpg-pubkey)' > /tmp/opensuse-pkgs.txt
               cat /tmp/opensuse-pkgs.txt | xargs chroot "./dump" zypper install --no-confirm --force
               sudo rm -f /tmp/opensuse-pkgs.txt
-              umount -l /dev "./dump/dev"
-              umount -l /proc "./dump/proc"
-              umount -l /sys "./dump/sys"
               EOF
               
               cd $GITHUB_WORKSPACE/dump
@@ -128,9 +125,6 @@ jobs:
               chroot "./dump" rpm -qa --qf '%{NAME} ' | xargs -n 1 | grep -Pv '(filesystem|gpg-pubkey)' > /tmp/opensuse-pkgs.txt
               cat /tmp/opensuse-pkgs.txt | xargs chroot "./dump" zypper install --no-confirm --force
               sudo rm -f /tmp/opensuse-pkgs.txt
-              umount -l /dev "./dump/dev"
-              umount -l /proc "./dump/proc"
-              umount -l /sys "./dump/sys"
               EOF
               
               cd $GITHUB_WORKSPACE/dump
