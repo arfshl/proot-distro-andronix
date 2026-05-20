@@ -40,13 +40,13 @@ jobs:
               ;;
               esac
               # Fetch image manifest
-              manifest=$(docker manifest inspect archlinux/archlinux)
+              manifest=$(docker manifest inspect archlinux)
               # Fetch image digest
               arch="$ARCH"
               digest=$(echo "$manifest" | jq -r ".manifests[] | select(.platform.architecture == \"$arch\") | .digest")
               # Pull and Export image
-              docker pull "archlinux/archlinux@${digest}"
-              docker export $(docker create "archlinux/archlinux@${digest}") | xz -T 0 > "$GITHUB_WORKSPACE/archlinux-${{ matrix.arch }}.tar.xz"
+              docker pull "archlinux@${digest}"
+              docker export $(docker create "archlinux@${digest}") | xz -T 0 > "$GITHUB_WORKSPACE/archlinux-${{ matrix.arch }}.tar.xz"
               mkdir dump
               sudo tar -xJpf archlinux-${{ matrix.arch }}.tar.xz -C dump
               sudo rm archlinux-${{ matrix.arch }}.tar.xz
