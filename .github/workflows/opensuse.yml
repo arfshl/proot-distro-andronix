@@ -59,7 +59,6 @@ jobs:
               mount --bind /sys "./dump/sys"
               chroot "./dump" zypper refresh
               chroot "./dump" zypper dup --no-confirm
-              chroot "./dump" /bin/bash -c 'pacman -Syu --noconfirm'
               chroot "./dump" rpm -qa --qf '%{NAME} ' | xargs -n 1 | grep -Pv '(filesystem|gpg-pubkey)' > /tmp/opensuse-pkgs.txt
               cat /tmp/opensuse-pkgs.txt | xargs chroot "./dump" zypper install --no-confirm --force
               sudo rm -f /tmp/opensuse-pkgs.txt
@@ -126,75 +125,6 @@ jobs:
               mount --bind /sys "./dump/sys"
               chroot "./dump" zypper refresh
               chroot "./dump" zypper dup --no-confirm
-              chroot "./dump" /bin/bash -c 'pacman -Syu --noconfirm'
-              chroot "./dump" rpm -qa --qf '%{NAME} ' | xargs -n 1 | grep -Pv '(filesystem|gpg-pubkey)' > /tmp/opensuse-pkgs.txt
-              cat /tmp/opensuse-pkgs.txt | xargs chroot "./dump" zypper install --no-confirm --force
-              sudo rm -f /tmp/opensuse-pkgs.txt
-              umount -l /dev "./dump/dev"
-              umount -l /proc "./dump/proc"
-              umount -l /sys "./dump/sys"
-              EOF
-              
-              cd $GITHUB_WORKSPACE/dump
-              sudo tar --exclude=dev/* -cpf - * | xz -9 -T0 -c > $GITHUB_WORKSPACE/opensuse-${{ matrix.arch }}.tar.xz
-              sudo rm -r $GITHUB_WORKSPACE/dump
-              
-      - name: Push to release
-        uses: softprops/action-gh-release@v3
-        with:
-          tag_name: opensuse
-          name: OpenSUSE
-          files: |
-            opensuse-*.tar.xz
-          preserve_order: true
-
-
-  build-arm:
-    runs-on: ubuntu-24.04-arm
-    strategy:
-      matrix:
-        arch: [arm]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: Start Build!
-        run: |
-              ARCH=${{ matrix.arch }}
-              case "$ARCH" in
-              x86_64) ARCH=amd64 ;;
-              amd64) ARCH=amd64 ;;
-              aarch64) ARCH=arm64 ;;
-              arm64) ARCH=arm64 ;;
-              arm) ARCH=arm ;;
-              i386) ARCH=386 ;;
-              *)
-              echo "Unsupported architecture: $ARCH"
-              exit 1
-              ;;
-              esac
-              # Fetch image manifest
-              manifest=$(docker manifest inspect opensuse/leap)
-              # Fetch image digest
-              arch="$ARCH"
-              digest=$(echo "$manifest" | jq -r ".manifests[] | select(.platform.architecture == \"$arch\") | select(.platform.variant == \"v7\") | .digest")
-              # Pull and Export image
-              docker pull "opensuse/leap@${digest}"
-              docker export $(docker create "opensuse/leap@${digest}") | xz -T 0 > "$GITHUB_WORKSPACE/opensuse-${{ matrix.arch }}.tar.xz"
-              mkdir dump
-              sudo tar -xJpf opensuse-${{ matrix.arch }}.tar.xz -C dump
-              sudo rm opensuse-${{ matrix.arch }}.tar.xz
-              
-              cat <<- EOF | sudo unshare -mpf bash -e -
-              rm -f "./dump/etc/resolv.conf"
-              echo "nameserver 1.1.1.1" > "./dump/etc/resolv.conf"
-              mount --bind /dev "./dump/dev"
-              mount --bind /proc "./dump/proc"
-              mount --bind /sys "./dump/sys"
-              chroot "./dump" zypper refresh
-              chroot "./dump" zypper dup --no-confirm
-              chroot "./dump" /bin/bash -c 'pacman -Syu --noconfirm'
               chroot "./dump" rpm -qa --qf '%{NAME} ' | xargs -n 1 | grep -Pv '(filesystem|gpg-pubkey)' > /tmp/opensuse-pkgs.txt
               cat /tmp/opensuse-pkgs.txt | xargs chroot "./dump" zypper install --no-confirm --force
               sudo rm -f /tmp/opensuse-pkgs.txt
