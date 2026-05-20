@@ -46,7 +46,7 @@ jobs:
               digest=$(echo "$manifest" | jq -r ".manifests[] | select(.platform.architecture == \"$arch\") | .digest")
               # Pull and Export image
               docker pull "alpine:edge@${digest}"
-              docker export $(docker create "alpine:edge@${digest}") | xz -T 0 > "$GITHUB_WORKSPACE/alpine-${{ matrix.arch }}.tar.xz"
+              docker export $(docker create "alpine:edge@${digest}") | xz -T 0 > "$GITHUB_WORKSPACE/alpine-edge-${{ matrix.arch }}.tar.xz"
 
       - name: Push to release
         uses: softprops/action-gh-release@v3
@@ -89,7 +89,7 @@ jobs:
               digest=$(echo "$manifest" | jq -r ".manifests[] | select(.platform.architecture == \"$arch\") | select(.platform.variant == \"v7\") | .digest")
               # Pull and Export image
               docker pull "alpine:edge@${digest}"
-              docker export $(docker create "alpine:edge@${digest}") | xz -T 0 > "$GITHUB_WORKSPACE/alpine-${{ matrix.arch }}.tar.xz"
+              docker export $(docker create "alpine:edge@${digest}") | xz -T 0 > "$GITHUB_WORKSPACE/alpine-edge-${{ matrix.arch }}.tar.xz"
 
       - name: Push to release
         uses: softprops/action-gh-release@v3
